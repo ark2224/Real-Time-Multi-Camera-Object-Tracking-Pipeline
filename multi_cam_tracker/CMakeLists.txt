@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(MultiCamTracker LANGUAGE CXX)
+project(MultiCamTracker LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,5 +27,26 @@ add_executable(multi_cam_tracker
 
 target_link_libraries(multi_cam_tracker
     ${OpenCV_LIBS}
-    pthread             # ignored if not on Linux
 )
+
+if(NOT MSVC)
+    target_link_libraries(multi_cam_tracker pthread)
+endif()
+
+enable_testing()
+
+add_executable(tests
+    tests/test_thread_safe_queue.cpp
+)
+
+target_include_directories(tests
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external/catch2
+)
+
+if(NOT MSVC)
+    target_link_libraries(multi_cam_tracker pthread)
+endif()
+
+add_test(NAME ThreadSafeQueueTests COMMAND tests)

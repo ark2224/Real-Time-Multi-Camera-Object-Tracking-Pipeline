@@ -18,6 +18,14 @@ public:
         m_cv.notify_one();
     }
 
+    void push(T&& value) {
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            m_queue.push(std::move(value));
+        }
+        m_cv.notify_one();
+    }
+
     // Blocks until an item is available or stop() gets called
     std::optional<T> pop() {
         std::unique_lock<std::mutex> lock(m_mutex);
@@ -27,7 +35,7 @@ public:
             return std::nullopt;
         }
 
-        T value = std::move(m.queue.front());
+        T value = std::move(m_queue.front());
         m_queue.pop();
         return value;
     }
@@ -45,5 +53,5 @@ private:
     std::queue<T> m_queue;
     std::mutex m_mutex;
     std::condition_variable m_cv;
-    bool m_stopped(false);
-}
+    bool m_stopped{false};
+};
