@@ -33,6 +33,8 @@ if(NOT MSVC)
     target_link_libraries(multi_cam_tracker pthread)
 endif()
 
+
+
 enable_testing()
 
 add_executable(tests
@@ -43,10 +45,11 @@ target_include_directories(tests
     PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/external/catch2
+        ${OpenCV_INCLUDE_DIRS}
 )
 
-if(NOT MSVC)
-    target_link_libraries(multi_cam_tracker pthread)
-endif()
+target_link_libraries(tests
+    ${OpenCV_INCLUDE_DIRS}
+)
 
 add_test(NAME ThreadSafeQueueTests COMMAND tests)
