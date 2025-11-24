@@ -1,6 +1,7 @@
 #pragma once
 
-#include <opencv/opencv/opencv.hpp>
+// #include <opencv/opencv/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include <string>
 #include <atomic>
 #include <thread>
