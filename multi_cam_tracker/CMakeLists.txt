@@ -12,6 +12,7 @@ else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+set(OpenCV_DIR "C:/opencv/opencv/build/x64/vc16/lib")  # folder with OpenCVConfig.cmake
 find_package(OpenCV REQUIRED)
 
 include_directories(
